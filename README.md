@@ -64,7 +64,7 @@ Implement the CUDA kernel for element-wise map operations and integrate it with 
 
 **Note**: Be sure to check out the CUDA examples in the lecture slides and the [cuda accelaration examples](https://github.com/llmsystem/llmsys_code_examples/tree/main/cuda_acceleration_demo)!
 
-The places where you need to fill in your code are highlighted with `BEGIN ASSIGN2_1` and `END ASSIGN2_1`
+The places where you need to fill in your code are highlighted with `BEGIN HW1_1` and `END HW1_1`
 
 Implement the CUDA kernel for map operations in `src/combine.cu`. The map operation applies a function element-wise to a tensor.
 
@@ -124,7 +124,7 @@ Implement the CUDA kernel for element-wise zip operations and integrate it with 
 
 ### Part A: Implement zipKernel (20 points)
 
-The places where you need to fill in your code are highlighted with `BEGIN ASSIGN2_2` and `END ASSIGN2_2`
+The places where you need to fill in your code are highlighted with `BEGIN HW1_2` and `END HW1_2`
 
 Implement the CUDA kernel for zip operations in `src/combine.cu`. The zip operation applies a binary function to corresponding elements of two input tensors.
 
@@ -143,7 +143,7 @@ __global__ void zipKernel(scalar_t* out, ...){
 
 ### Part B: Integrate Zip Operation (5 points)
 
-The places where you need to fill in your code are highlighted with `BEGIN ASSIGN2_2_INTEGRATION` and `END ASSIGN2_2_INTEGRATION`
+The places where you need to fill in your code are highlighted with `BEGIN HW1_2` and `END HW1_2`
 
 Implement the `zip` function in `minitorch/cuda_kernel_ops.py`:
 
@@ -169,7 +169,7 @@ Implement the CUDA kernel for reduction operations and integrate it with the fra
 
 ### Part A: Implement reduceKernel (20 points)
 
-The places where you need to fill in your code are highlighted with `BEGIN ASSIGN2_3` and `END ASSIGN2_3`
+The places where you need to fill in your code are highlighted with `BEGIN HW1_3` and `END HW1_3`
 
 Implement the CUDA kernel for reduce operations in `src/combine.cu`. The reduce operation combines elements along a specified dimension.
 
@@ -212,7 +212,7 @@ __global__ void reduce0(int *g_idata, int *g_odata) {
 
 ### Part B: Integrate Reduce Operation (5 points)
 
-The places where you need to fill in your code are highlighted with `BEGIN ASSIGN2_3_INTEGRATION` and `END ASSIGN2_3_INTEGRATION`
+The places where you need to fill in your code are highlighted with `BEGIN HW1_3` and `END HW1_3`
 
 Implement the `reduce` function in `minitorch/cuda_kernel_ops.py`:
 
@@ -240,7 +240,7 @@ Implement the CUDA kernel for matrix multiplication and integrate it with the fr
 
 ### Part A: Implement MatrixMultiplyKernel (25 points)
 
-The places where you need to fill in your code are highlighted with `BEGIN ASSIGN2_4` and `END ASSIGN2_4`
+The places where you need to fill in your code are highlighted with `BEGIN HW1_4` and `END HW1_4`
 
 Implement the CUDA kernel for matrix multiplication in `src/combine.cu`.
 
@@ -298,7 +298,7 @@ __global__ void mm(float A[N][N], float B[N][N], float C[N][N]) {
 
 ### Part B: Integrate Matrix Multiplication (5 points)
 
-The places where you need to fill in your code are highlighted with `BEGIN ASSIGN2_4_INTEGRATION` and `END ASSIGN2_4_INTEGRATION`
+The places where you need to fill in your code are highlighted with `BEGIN HW1_4` and `END HW1_4`
 
 Implement the `matrix_multiply` function in `minitorch/cuda_kernel_ops.py`:
 
