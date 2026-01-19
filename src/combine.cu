@@ -200,7 +200,6 @@ __device__ void broadcast_index(const int *big_index, const int *big_shape, cons
    *    big_index: multidimensional index of bigger tensor
    *    big_shape: tensor shape of bigger tensor
    *    shape: tensor shape of smaller tensor
-   *    nums_big_dims: number of dimensions in bigger tensor
    *    out_index: multidimensional index of smaller tensor
    *    nums_big_dims: number of dimensions in bigger tensor
    *    num_dims: number of dimensions in smaller tensor
@@ -269,7 +268,15 @@ __global__ void mapKernel(
   // 5. Calculate the position of element in out_array according to out_index and out_strides
   // 6. Apply the unary function to the input element and write the output to the out memory
 
-  assert(false && "Not Implemented");
+  int cur_idx = blockIdx.x * blockDim.x + threadIdx.x;
+  if (cur_idx < out_size) {
+    to_index(cur_idx, out_shape, out_index, shape_size);
+    broadcast_index(out_index, out_shape, in_shape, in_index, shape_size, shape_size);
+    int in_pos = index_to_position(in_index, in_strides, shape_size);
+    int out_pos = index_to_position(out_index, out_strides, shape_size);
+    out[out_pos] = fn(fn_id, in_storage[in_pos]);
+  }
+  
   /// END HW1_1
 }
 
