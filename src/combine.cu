@@ -396,7 +396,7 @@ __global__ void reduceKernel(
    *  None (Fills in out array)
    */
 
-  // __shared__ double cache[BLOCK_DIM]; // Uncomment this line if you want to use shared memory to store partial results
+  __shared__ double cache[BLOCK_DIM]; // Uncomment this line if you want to use shared memory to store partial results
   int out_index[MAX_DIMS];
 
   /// BEGIN HW1_3
@@ -407,7 +407,27 @@ __global__ void reduceKernel(
   // 4. Iterate over the reduce_dim dimension of the input array to compute the reduced value
   // 5. Write the reduced value to out memory
 
-  assert(false && "Not Implemented");
+  int out_pos = blockIdx.x;
+  int tid = threadIdx.x;
+  
+  if (out_pos < out_size) {
+    to_index(out_pos, out_shape, out_index, shape_size);
+    out_index[reduce_dim] = tid;
+    int in_pos = index_to_position(out_index, a_strides, shape_size);
+    cache[tid] = a_storage[in_pos];
+    __syncthreads();
+    for(int s = 1; s < blockDim.x; s *= 2) {
+        if (tid % (2 * s) == 0) {
+            cache[tid] = fn(fn_id, cache[tid], cache[tid+s]);
+        }
+        __syncthreads();
+    }
+    if (tid == 0) {
+        out[out_pos] = fn(fn_id, reduce_value, cache[0]);
+    }
+    
+  }
+
   /// END HW1_3
 }
 
@@ -709,8 +729,9 @@ extern "C"
     cudaMemcpy(d_a_strides, a_strides, shape_size * sizeof(int), cudaMemcpyHostToDevice);
 
     // Launch kernel
-    int threadsPerBlock = 32;
-    int blocksPerGrid = (out_size + threadsPerBlock - 1) / threadsPerBlock;
+   
+    int blocksPerGrid = out_size;
+    int threadsPerBlock = (a_size + blocksPerGrid - 1) / blocksPerGrid;
     reduceKernel<<<blocksPerGrid, threadsPerBlock>>>(
         d_out, d_out_shape, d_out_strides, out_size,
         d_a, d_a_shape, d_a_strides,
